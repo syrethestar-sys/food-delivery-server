@@ -7,4 +7,4 @@ const foodCategorySchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-export const foodCategory = mongoose.model("FoodCategory", foodCategorySchema);
+export const FoodCategory = mongoose.model("FoodCategory", foodCategorySchema);

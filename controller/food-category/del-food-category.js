@@ -9,9 +9,7 @@ export const deleteFoodCategoryController = async (request, response) => {
       response.status(404).json({ message: `Food category not found` });
     }
 
-    response
-      .status(201)
-      .json({ message: `${deletedCategory} category deleted` });
+    response.status(200).json({ message:"Category deleted", deletedCategory });
   } catch (err) {
     response.status(500).json({ message: "Internal server error", error: err });
   }

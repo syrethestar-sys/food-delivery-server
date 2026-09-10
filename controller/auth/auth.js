@@ -1,4 +1,5 @@
 import { User } from "../../schemas/user-schema.js";
+import bcrypt from "bcrypt";
 
 export const loginController = async (request, response) => {
   try {
@@ -8,17 +9,19 @@ export const loginController = async (request, response) => {
 
     if (!user) {
       return response
-        .status(404)
-        .json({ message: "No account found with that email" });
+        .status(401)
+        .json({ message: "Incorrect email or password" });
     }
 
-    const isMatch = password === user.password;
+    const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return response.status(401).json({ message: "Incorrect password" });
+      return response
+        .status(401)
+        .json({ message: "Incorrect email or password" });
     }
-
-    response.status(200).json({ message: "Login successful", user });
+    const safeUser = { id: user._id, email: user.email, role: user.role };
+    response.status(200).json({ message: "Login successful", user: safeUser });
   } catch (err) {
     response.status(500).json({ message: "Internal server error", error: err });
   }
@@ -28,9 +31,10 @@ export const signUpController = async (request, response) => {
   try {
     const { email, password } = request.body;
 
-    const user = await User.create({ email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ email, password: hashedPassword });
 
-    response.status(201).json({ message: "user created", user: user });
+    response.status(201).json({ message: "User created"});
   } catch (err) {
     response.status(500).json({ message: "Internal Server Error", error: err });
   }

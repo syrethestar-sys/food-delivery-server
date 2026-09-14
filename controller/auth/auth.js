@@ -1,6 +1,8 @@
 import { User } from "../../schemas/user-schema.js";
 import bcrypt from "bcrypt";
 
+const SALT_ROUND = 10
+
 export const loginController = async (request, response) => {
   try {
     const { email, password } = request.body;
@@ -31,7 +33,7 @@ export const signUpController = async (request, response) => {
   try {
     const { email, password } = request.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUND);
     const user = await User.create({ email, password: hashedPassword });
 
     response.status(201).json({ message: "User created"});

@@ -4,6 +4,7 @@ import { connectDB } from "./connectDB.js";
 import authRouter from "./router/auth/auth.js";
 import foodCategoryRouter from "./router/auth/food-category/food-category-router.js";
 import foodRouter from "./router/auth/food/food-router.js";
+import orderRouter from "./router/order/order-router.js"
 import cors from "cors";
 
 const app = express();
@@ -30,6 +31,7 @@ app.get("/", (request, response) => {
 app.use("/auth", authRouter);
 app.use("/food-category", foodCategoryRouter);
 app.use("/food", foodRouter);
+app.use("/order", orderRouter);
 
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {

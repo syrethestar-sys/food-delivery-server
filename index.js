@@ -9,7 +9,7 @@ import cors from "cors";
 
 const app = express();
 
-const PORT = 1000;
+const PORT = 2000;
 
 app.use(express.json());
 app.use(cors());

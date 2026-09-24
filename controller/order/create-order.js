@@ -4,7 +4,7 @@ import { Food } from "../../schemas/food.js";
 
 export const createOrderController = async (request, response) => {
   try {
-    const userId = request.headers["x-user-id"];
+    const userId = request.user.id
     if (!userId || !mongoose.isValidObjectId(userId)) {
       return response.status(401).json({ message: "Missing or invalid user" });
     }

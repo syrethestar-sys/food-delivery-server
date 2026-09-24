@@ -12,6 +12,9 @@ const store = (prefix) =>
 const base = {
   standardHeaders: "draft-7",
   legacyHeaders: false,
+  // Redis is capped at 30 connections; if a serverless instance can't reach it,
+  // let the request through rather than returning a 500.
+  passOnStoreError: true,
 };
 
 export const globalLimiter = rateLimit({

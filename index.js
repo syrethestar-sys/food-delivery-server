@@ -11,7 +11,9 @@ import cors from "cors";
 const app = express();
 const PORT = 2000;
 
-app.set("trust proxy", 1);
+if (process.env.VERCEL) {
+  app.set("trust proxy", 1);
+}
 
 app.use(cors());
 app.use(globalLimiter);

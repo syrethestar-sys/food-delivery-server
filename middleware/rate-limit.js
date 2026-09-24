@@ -1,4 +1,13 @@
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
+import { RedisStore } from "rate-limit-redis";
+import Redis from "ioredis";
+
+const redis = process.env.REDIS_URL ? new Redis(process.env.REDIS_URL) : null;
+
+const store = (prefix) =>
+  redis
+    ? new RedisStore({ prefix, sendCommand: (...args) => redis.call(...args) })
+    : undefined;
 
 const base = {
   standardHeaders: "draft-7",
@@ -7,6 +16,7 @@ const base = {
 
 export const globalLimiter = rateLimit({
   ...base,
+  store: store("gl:"),
   windowMs: 15 * 60 * 1000,
   limit: 300,
   skip: (request) => request.path === "/",
@@ -15,6 +25,7 @@ export const globalLimiter = rateLimit({
 
 export const authLimiter = rateLimit({
   ...base,
+  store: store("auth:"),
   windowMs: 15 * 60 * 1000,
   limit: 8,
   skipSuccessfulRequests: true,
@@ -23,6 +34,7 @@ export const authLimiter = rateLimit({
 
 export const orderLimiter = rateLimit({
   ...base,
+  store: store("order:"),
   windowMs: 60 * 1000,
   limit: 10,
   keyGenerator: (request) => ipKeyGenerator(request.ip),

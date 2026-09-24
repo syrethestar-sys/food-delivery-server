@@ -4,15 +4,18 @@ import { connectDB } from "./connectDB.js";
 import authRouter from "./router/auth/auth.js";
 import foodCategoryRouter from "./router/auth/food-category/food-category-router.js";
 import foodRouter from "./router/auth/food/food-router.js";
-import orderRouter from "./router/order/order-router.js"
+import orderRouter from "./router/order/order-router.js";
+import { globalLimiter } from "./middleware/rate-limit.js";
 import cors from "cors";
 
 const app = express();
-
 const PORT = 2000;
 
-app.use(express.json());
+app.set("trust proxy", 1);
+
 app.use(cors());
+app.use(globalLimiter);
+app.use(express.json());
 
 app.use(async (request, response, next) => {
   try {

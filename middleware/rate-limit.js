@@ -25,6 +25,6 @@ export const orderLimiter = rateLimit({
   ...base,
   windowMs: 60 * 1000,
   limit: 10,
-  keyGenerator: (request) => request.user?.id ?? ipKeyGenerator(request.ip),
+  keyGenerator: (request) => ipKeyGenerator(request.ip),
   message: { message: "Too many orders, slow down" },
 });

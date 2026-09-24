@@ -8,7 +8,7 @@ import { orderLimiter } from "../../middleware/rate-limit.js";
 
 const router = express.Router();
 
-router.post("/create", requireAuth, orderLimiter, createOrderController);
+router.post("/create", orderLimiter, requireAuth, createOrderController);
 router.get("/my-orders", requireAuth, myOrdersController);
 router.get("/all", requireAuth, requireAdmin, listAllOrdersController);
 router.put(

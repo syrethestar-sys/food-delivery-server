@@ -1,7 +1,7 @@
 import rateLimit, { ipKeyGenerator } from "express-rate-limit";
 
 const base = {
-  standartHeaders: "draft-7",
+  standardHeaders: "draft-7",
   legacyHeaders: false,
 };
 
